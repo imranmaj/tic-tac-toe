@@ -46,17 +46,20 @@ impl Board {
 
     pub fn check_game_end(&self) -> GameResult {
         let row_size = self.board[0].len();
+        // check rows
         for row in self.board.iter() {
             if let Some(p) = all_equal(row.iter()) {
                 return GameResult::Win(p);
             }
         }
+        // check columns
         for i in 0..row_size {
             let col = self.board.iter().map(|row| row.iter().nth(i)).flatten();
             if let Some(p) = all_equal(col) {
                 return GameResult::Win(p);
             }
         }
+        // check left to right diagonal
         let diag = self
             .board
             .iter()
@@ -66,6 +69,7 @@ impl Board {
         if let Some(p) = all_equal(diag) {
             return GameResult::Win(p);
         }
+        // check right to left diagonal
         let diag2 = self
             .board
             .iter()
