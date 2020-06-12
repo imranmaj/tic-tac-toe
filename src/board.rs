@@ -20,10 +20,9 @@ impl Board {
     }
 
     pub fn next_move(&mut self) {
-        if let Player::Player1 = self.turn {
-            self.turn = Player::Player2;
-        } else {
-            self.turn = Player::Player1;
+        match self.turn {
+            Player::Player1 => self.turn = Player::Player2,
+            Player::Player2 => self.turn = Player::Player1,
         }
     }
 
@@ -36,11 +35,12 @@ impl Board {
             return Err("index out of bounds");
         }
         let current = &self.board[position.0][position.1];
-        if let Some(_) = current {
-            Err("player has already moved here")
-        } else {
-            self.board[position.0][position.1] = Some(player);
-            Ok(())
+        match current {
+            Some(_) => Err("player has already moved here"),
+            None => {
+                self.board[position.0][position.1] = Some(player);
+                Ok(())
+            }
         }
     }
 
